@@ -1,20 +1,27 @@
 #!/usr/bin/env python
 
-
 """
-grv
-~~~
+grv.py
+------
 
 A script for generating random values with the command line.
 
-So far only uniform distribution is supported.
+Usage:
+    Generate one number between 0 and 1:
+    grv.py
+
+    Generate one number between min and max:
+    grv.py <min> <max>
+
+    Generate n numbers between min and max:
+    grv.py <min> <max> <n>
 
 """
 
+
 import random
-import sys
-import os
 import argparse
+
 
 def uniform(domain=None):
     """Generate a random value in the given domain using a uniform distribution
@@ -42,8 +49,7 @@ def uniform(domain=None):
         start = 0
         stop = 1
 
-    while True:
-        yield random.random() * (stop - start) + start
+    return random.random() * (stop - start) + start
 
 
 def normal(parameters=None):
@@ -72,24 +78,7 @@ def normal(parameters=None):
         mu = 0
         sigma = 1
 
-    while True:
-        yield random.gauss(mu, sigma)
-
-
-def usage():
-    """Display a help message"""
-    script = os.path.basename(__file__)
-    print """%s -- Generate random numbers
-
-Usage:
-    Generate one number between 0 and 1:
-    %s
-
-    Generate one number between min and max:
-    %s <min> <max>
-
-    Generate n numbers between min and max:
-    %s <min> <max> <n>""" % ((script, ) * 4)
+    return random.gauss(mu, sigma)
 
 
 # The argument parser
@@ -105,9 +94,8 @@ args = parser.parse_args()
 
 if __name__ == '__main__':
     n = 1
-    r = args.accumulate(args.parameters)
     if len(args.parameters) == 3:
         n = int(args.parameters[2])
 
     for i in range(n):
-        print r.next()
+        print args.accumulate(args.parameters)
